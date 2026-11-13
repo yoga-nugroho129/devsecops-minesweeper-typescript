@@ -61,3 +61,5 @@ npm run preview
 | **Beri Bendera** | Klik Kanan | Aktifkan ikon 🚩 lalu ketuk kotak |
 | **Chord (Buka Sekitar)** | Double Click / Klik pada angka yang sudah sesuai bendera | Ketuk angka |
 | **Mulai Ulang** | Klik tombol Emoji wajah 🙂 | Ketuk tombol Emoji wajah 🙂 |
+
+# devsecops-minesweeper-typescript
