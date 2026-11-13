@@ -11,6 +11,7 @@ Game Minesweeper modern dengan logika klasik, desain neo-retro, dan kustomisasi 
 
 ## ✨ Fitur Utama
 
+- 🌐 **Dukungan Multi-bahasa (Bilingual EN / ID)**: Dilengkapi tombol bendera (🇬🇧 English / 🇮🇩 Indonesia) untuk mengubah bahasa antarmuka secara instan, dengan **Bahasa Inggris (English) sebagai default**.
 - 📐 **Ukuran Grid Kustom**: Bebas mengatur jumlah baris (*row*) dan kolom (*column*) dari 4×4 hingga 40×40 serta mengatur jumlah ranjau sesuai keinginan.
 - 🎯 **Preset Standar**:
   - **Pemula (Default)**: 8 × 8 (10 Ranjau)

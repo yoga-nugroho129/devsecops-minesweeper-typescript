@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { Sliders, HelpCircle, Trophy, RefreshCw, Sparkles, AlertTriangle } from 'lucide-react';
-import { Difficulty, GameConfig, GameStatus, BoardMatrix, BestScores } from './types/minesweeper';
+import { Difficulty, GameConfig, GameStatus, BoardMatrix, BestScores, Language } from './types/minesweeper';
 import {
   PRESETS,
   createEmptyBoard,
@@ -15,14 +15,30 @@ import {
   countFlags,
 } from './utils/minesweeper';
 import { sounds } from './utils/sound';
+import { translations } from './utils/i18n';
 import { Header } from './components/Header';
 import { Board } from './components/Board';
 import { CustomGameModal } from './components/CustomGameModal';
 import { HowToPlayModal } from './components/HowToPlayModal';
+import { LanguageToggle } from './components/LanguageToggle';
 
 const STORAGE_KEY_SCORES = 'minesweeper_best_scores';
+const STORAGE_KEY_LANG = 'minesweeper_lang';
 
 export const App: React.FC = () => {
+  // Language Selection (Default: 'en' as requested)
+  const [language, setLanguage] = useState<Language>(() => {
+    try {
+      const savedLang = localStorage.getItem(STORAGE_KEY_LANG);
+      if (savedLang === 'en' || savedLang === 'id') return savedLang;
+    } catch {
+      // Ignore
+    }
+    return 'en';
+  });
+
+  const t = translations[language];
+
   // Difficulty and Board Configuration (Default: 8x8 with 10 mines)
   const [difficulty, setDifficulty] = useState<Difficulty>('beginner');
   const [config, setConfig] = useState<GameConfig>(PRESETS.beginner);
@@ -70,6 +86,15 @@ export const App: React.FC = () => {
       }
     };
   }, [status]);
+
+  const handleLanguageChange = (newLang: Language) => {
+    setLanguage(newLang);
+    try {
+      localStorage.setItem(STORAGE_KEY_LANG, newLang);
+    } catch {
+      // Ignore
+    }
+  };
 
   // Reset Game
   const resetGame = useCallback(() => {
@@ -199,46 +224,67 @@ export const App: React.FC = () => {
   const currentScoreKey = `${config.rows}x${config.cols}-${config.mines}`;
   const bestTime = bestScores[currentScoreKey];
 
+  const getDifficultyLabel = (diff: Difficulty) => {
+    switch (diff) {
+      case 'beginner':
+        return t.beginner;
+      case 'intermediate':
+        return t.intermediate;
+      case 'expert':
+        return t.expert;
+      case 'custom':
+        return t.custom;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between py-6 px-3 sm:px-6">
       {/* Top Navigation & Brand */}
       <header className="max-w-4xl mx-auto w-full mb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-gradient-to-tr from-rose-600 to-amber-500 rounded-2xl shadow-lg shadow-rose-950/40">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
-                Minesweeper
+                {t.appTitle}
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
                   {config.rows}×{config.cols}
                 </span>
               </h1>
               <p className="text-xs text-slate-400">
-                React • TypeScript • Tailwind CSS
+                {t.appSubtitle}
               </p>
             </div>
           </div>
 
-          {/* Action buttons */}
-          <div className="flex items-center gap-2">
+          {/* Action buttons & Language Switcher */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Language Flag Selector (Default EN) */}
+            <LanguageToggle
+              currentLanguage={language}
+              onLanguageChange={handleLanguageChange}
+            />
+
             <button
               type="button"
               onClick={() => setIsHelpOpen(true)}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-              title="Cara Bermain"
+              className="p-2 sm:p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              title={t.howToPlay}
+              aria-label={t.howToPlay}
             >
               <HelpCircle className="w-5 h-5" />
             </button>
+
             <button
               type="button"
               onClick={() => setIsSettingsOpen(true)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-200 transition-all shadow-sm text-sm font-semibold"
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-200 transition-all shadow-sm text-xs sm:text-sm font-semibold"
             >
               <Sliders className="w-4 h-4 text-amber-400" />
-              <span className="hidden sm:inline">Ubah Grid ({config.rows}×{config.cols})</span>
-              <span className="sm:hidden">Grid</span>
+              <span className="hidden sm:inline">{t.changeGrid} ({config.rows}×{config.cols})</span>
+              <span className="sm:hidden">{t.gridShort}</span>
             </button>
           </div>
         </div>
@@ -252,14 +298,14 @@ export const App: React.FC = () => {
             <div className="mb-4 p-3 bg-emerald-500/15 border border-emerald-500/30 rounded-xl flex items-center justify-between gap-3 text-emerald-300 animate-fade-in">
               <div className="flex items-center gap-2 text-sm font-bold">
                 <Trophy className="w-5 h-5 text-amber-400" />
-                <span>Selamat! Anda Menang dalam {timer} detik!</span>
+                <span>{t.winTitle(timer)}</span>
               </div>
               <button
                 type="button"
                 onClick={resetGame}
                 className="px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition-colors flex items-center gap-1"
               >
-                <RefreshCw className="w-3.5 h-3.5" /> Main Lagi
+                <RefreshCw className="w-3.5 h-3.5" /> {t.playAgain}
               </button>
             </div>
           )}
@@ -268,14 +314,14 @@ export const App: React.FC = () => {
             <div className="mb-4 p-3 bg-rose-500/15 border border-rose-500/30 rounded-xl flex items-center justify-between gap-3 text-rose-300 animate-fade-in">
               <div className="flex items-center gap-2 text-sm font-bold">
                 <AlertTriangle className="w-5 h-5 text-rose-400" />
-                <span>Boom! Anda terkena ranjau.</span>
+                <span>{t.lostTitle}</span>
               </div>
               <button
                 type="button"
                 onClick={resetGame}
                 className="px-3 py-1 bg-rose-500 hover:bg-rose-400 text-slate-950 font-bold rounded-lg text-xs transition-colors flex items-center gap-1"
               >
-                <RefreshCw className="w-3.5 h-3.5" /> Coba Lagi
+                <RefreshCw className="w-3.5 h-3.5" /> {t.tryAgain}
               </button>
             </div>
           )}
@@ -287,6 +333,7 @@ export const App: React.FC = () => {
             timer={timer}
             flagMode={flagMode}
             isMuted={isMuted}
+            t={t}
             onReset={resetGame}
             onToggleFlagMode={() => setFlagMode(prev => !prev)}
             onToggleMute={handleToggleMute}
@@ -299,23 +346,24 @@ export const App: React.FC = () => {
             onFlag={handleFlag}
             onChord={handleChord}
             disabled={status === 'won' || status === 'lost'}
+            t={t.cellAria}
           />
 
           {/* Bottom info stats */}
           <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-slate-300">
-                {difficulty === 'custom' ? 'Kustom' : difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}:
+                {getDifficultyLabel(difficulty)}:
               </span>
               <span>
-                {config.rows}×{config.cols} ({config.mines} Ranjau)
+                {config.rows}×{config.cols} ({config.mines} {t.minesCountSuffix})
               </span>
             </div>
 
             {bestTime !== undefined && (
               <div className="flex items-center gap-1.5 text-amber-400 font-mono">
                 <Trophy className="w-3.5 h-3.5 text-amber-400" />
-                <span>Rekor: {bestTime}s</span>
+                <span>{t.record(bestTime)}</span>
               </div>
             )}
           </div>
@@ -324,7 +372,7 @@ export const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="mt-6 text-center text-xs text-slate-500">
-        Minesweeper TypeScript • Grid Kustomisasi Bebas • First Click Aman
+        {t.footerText}
       </footer>
 
       {/* Modals */}
@@ -333,12 +381,14 @@ export const App: React.FC = () => {
         onClose={() => setIsSettingsOpen(false)}
         currentDifficulty={difficulty}
         currentConfig={config}
+        t={t}
         onApplyConfig={handleApplyConfig}
       />
 
       <HowToPlayModal
         isOpen={isHelpOpen}
         onClose={() => setIsHelpOpen(false)}
+        t={t}
       />
     </div>
   );

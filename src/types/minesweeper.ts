@@ -2,6 +2,8 @@ export type GameStatus = 'idle' | 'playing' | 'won' | 'lost';
 
 export type Difficulty = 'beginner' | 'intermediate' | 'expert' | 'custom';
 
+export type Language = 'en' | 'id';
+
 export interface GameConfig {
   rows: number;
   cols: number;

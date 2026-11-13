@@ -1,6 +1,7 @@
 import React from 'react';
 import { Volume2, VolumeX, Flag, RotateCcw } from 'lucide-react';
 import { GameStatus } from '../types/minesweeper';
+import { Translations } from '../utils/i18n';
 
 interface HeaderProps {
   status: GameStatus;
@@ -8,6 +9,7 @@ interface HeaderProps {
   timer: number;
   flagMode: boolean;
   isMuted: boolean;
+  t: Translations;
   onReset: () => void;
   onToggleFlagMode: () => void;
   onToggleMute: () => void;
@@ -19,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   timer,
   flagMode,
   isMuted,
+  t,
   onReset,
   onToggleFlagMode,
   onToggleMute,
@@ -53,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Mine Counter Display */}
         <div className="flex flex-col items-center">
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-            Ranjau
+            {t.mines}
           </span>
           <div className="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800/80 shadow-inner flex items-center justify-center min-w-[70px]">
             <span className="digital-display text-rose-500 font-bold text-xl sm:text-2xl tracking-widest">
@@ -69,8 +72,8 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onReset}
             className="w-12 h-12 rounded-xl bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-slate-600/80 hover:border-amber-400/80 shadow-md flex items-center justify-center text-2xl transition-transform active:scale-90 hover:scale-105 focus:outline-none"
-            title="Mulai Ulang (Restart)"
-            aria-label="Restart game"
+            title={`${t.restart} (Smile Face)`}
+            aria-label={t.restart}
           >
             {getFaceEmoji()}
           </button>
@@ -84,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
                 ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.3)]'
                 : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
             }`}
-            title={flagMode ? 'Mode Bendera Aktif' : 'Mode Buka Kotak Aktif'}
+            title={flagMode ? t.touchFlagModeOn : t.touchFlagModeOff}
           >
             <Flag className={`w-5 h-5 ${flagMode ? 'fill-rose-500' : ''}`} />
           </button>
@@ -93,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Timer Display */}
         <div className="flex flex-col items-center">
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-            Waktu
+            {t.time}
           </span>
           <div className="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800/80 shadow-inner flex items-center justify-center min-w-[70px]">
             <span className="digital-display text-rose-500 font-bold text-xl sm:text-2xl tracking-widest">
@@ -110,38 +113,37 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onToggleMute}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-colors text-slate-300"
-            title={isMuted ? 'Suara Mati' : 'Suara Aktif'}
+            title={isMuted ? t.mute : t.audio}
           >
             {isMuted ? <VolumeX className="w-3.5 h-3.5 text-rose-400" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
-            <span>{isMuted ? 'Mute' : 'Audio'}</span>
+            <span>{isMuted ? t.mute : t.audio}</span>
           </button>
 
           <button
             type="button"
             onClick={onReset}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-colors text-slate-300"
-            title="Reset"
+            title={t.reset}
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset</span>
+            <span>{t.reset}</span>
           </button>
         </div>
 
         <div className="hidden sm:flex items-center gap-2 text-slate-400">
           <span className="flex items-center gap-1">
-            <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono border border-slate-700">Klik Kiri</span> Buka
+            <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono border border-slate-700">{t.leftClick}</span> {t.leftClickAction}
           </span>
           <span className="text-slate-600">•</span>
           <span className="flex items-center gap-1">
-            <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono border border-slate-700">Klik Kanan</span> Bendera
+            <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono border border-slate-700">{t.rightClick}</span> {t.rightClickAction}
           </span>
           <span className="text-slate-600">•</span>
           <span className="flex items-center gap-1">
-            <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono border border-slate-700">Dbl-Klik</span> Chord
+            <span className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono border border-slate-700">{t.dblClick}</span> {t.dblClickAction}
           </span>
         </div>
       </div>
     </div>
   );
 };
-

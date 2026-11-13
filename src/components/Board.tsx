@@ -1,6 +1,7 @@
 import React from 'react';
 import { BoardMatrix } from '../types/minesweeper';
 import { Cell } from './Cell';
+import { Translations } from '../utils/i18n';
 
 interface BoardProps {
   board: BoardMatrix;
@@ -8,6 +9,7 @@ interface BoardProps {
   onFlag: (row: number, col: number) => void;
   onChord: (row: number, col: number) => void;
   disabled?: boolean;
+  t?: Translations['cellAria'];
 }
 
 export const Board: React.FC<BoardProps> = ({
@@ -16,6 +18,7 @@ export const Board: React.FC<BoardProps> = ({
   onFlag,
   onChord,
   disabled = false,
+  t,
 }) => {
   const cols = board[0]?.length || 0;
 
@@ -47,6 +50,7 @@ export const Board: React.FC<BoardProps> = ({
               onFlag={onFlag}
               onChord={onChord}
               disabled={disabled}
+              t={t}
             />
           ))
         )}

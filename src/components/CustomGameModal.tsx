@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { X, Sliders, Check } from 'lucide-react';
 import { Difficulty, GameConfig } from '../types/minesweeper';
 import { PRESETS } from '../utils/minesweeper';
+import { Translations } from '../utils/i18n';
 
 interface CustomGameModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentDifficulty: Difficulty;
   currentConfig: GameConfig;
+  t: Translations;
   onApplyConfig: (difficulty: Difficulty, config: GameConfig) => void;
 }
 
@@ -16,6 +18,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
   onClose,
   currentDifficulty,
   currentConfig,
+  t,
   onApplyConfig,
 }) => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(currentDifficulty);
@@ -64,6 +67,8 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
     setCustomMines(computedMines);
   };
 
+  const m = t.modalSettings;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
       <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-md w-full shadow-2xl p-6 relative">
@@ -71,7 +76,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <Sliders className="w-5 h-5 text-amber-400" />
-            <h2 className="text-lg font-bold text-white">Pengaturan Ukuran & Ranjau</h2>
+            <h2 className="text-lg font-bold text-white">{m.title}</h2>
           </div>
           <button
             type="button"
@@ -86,7 +91,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
           {/* Difficulty Preset Options */}
           <div>
             <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">
-              Pilihan Kesulitan
+              {m.difficultyHeader}
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -99,10 +104,10 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm">Pemula (Default)</span>
+                  <span className="font-bold text-sm">{t.beginner}</span>
                   {selectedDifficulty === 'beginner' && <Check className="w-4 h-4 text-amber-400" />}
                 </div>
-                <span className="text-xs text-slate-400 mt-1">8 × 8 • 10 Ranjau</span>
+                <span className="text-xs text-slate-400 mt-1">{m.beginnerDesc}</span>
               </button>
 
               <button
@@ -115,10 +120,10 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm">Menengah</span>
+                  <span className="font-bold text-sm">{t.intermediate}</span>
                   {selectedDifficulty === 'intermediate' && <Check className="w-4 h-4 text-amber-400" />}
                 </div>
-                <span className="text-xs text-slate-400 mt-1">16 × 16 • 40 Ranjau</span>
+                <span className="text-xs text-slate-400 mt-1">{m.intermediateDesc}</span>
               </button>
 
               <button
@@ -131,10 +136,10 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm">Ahli</span>
+                  <span className="font-bold text-sm">{t.expert}</span>
                   {selectedDifficulty === 'expert' && <Check className="w-4 h-4 text-amber-400" />}
                 </div>
-                <span className="text-xs text-slate-400 mt-1">16 × 30 • 99 Ranjau</span>
+                <span className="text-xs text-slate-400 mt-1">{m.expertDesc}</span>
               </button>
 
               <button
@@ -147,10 +152,10 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm">Kustom</span>
+                  <span className="font-bold text-sm">{t.custom}</span>
                   {selectedDifficulty === 'custom' && <Check className="w-4 h-4 text-amber-400" />}
                 </div>
-                <span className="text-xs text-slate-400 mt-1">Atur Baris & Kolom</span>
+                <span className="text-xs text-slate-400 mt-1">{m.customDesc}</span>
               </button>
             </div>
           </div>
@@ -161,7 +166,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs text-slate-400 block mb-1">
-                    Baris (Row) <span className="text-slate-500">(4-40)</span>
+                    {m.rowLabel}
                   </label>
                   <input
                     type="number"
@@ -181,7 +186,7 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
 
                 <div>
                   <label className="text-xs text-slate-400 block mb-1">
-                    Kolom (Col) <span className="text-slate-500">(4-40)</span>
+                    {m.colLabel}
                   </label>
                   <input
                     type="number"
@@ -202,8 +207,8 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
 
               <div>
                 <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span>Jumlah Ranjau (1 - {maxMines})</span>
-                  <span className="text-amber-400 font-mono font-semibold">Kerapatan: {currentDensity}%</span>
+                  <span>{m.minesLabel(maxMines)}</span>
+                  <span className="text-amber-400 font-mono font-semibold">{m.densityLabel(currentDensity)}</span>
                 </div>
                 <input
                   type="number"
@@ -218,28 +223,28 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
                 />
 
                 {/* Quick Density Presets */}
-                <div className="flex items-center gap-1.5 mt-2">
-                  <span className="text-[11px] text-slate-500">Preset Kerapatan:</span>
+                <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                  <span className="text-[11px] text-slate-500">{m.densityPreset}</span>
                   <button
                     type="button"
                     onClick={() => setDensityPreset(12)}
                     className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 border border-slate-700"
                   >
-                    12% (Santai)
+                    {m.densityRelaxed}
                   </button>
                   <button
                     type="button"
                     onClick={() => setDensityPreset(16)}
                     className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 border border-slate-700"
                   >
-                    16% (Standar)
+                    {m.densityStandard}
                   </button>
                   <button
                     type="button"
                     onClick={() => setDensityPreset(22)}
                     className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 border border-slate-700"
                   >
-                    22% (Sulit)
+                    {m.densityHard}
                   </button>
                 </div>
               </div>
@@ -253,13 +258,13 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
               onClick={onClose}
               className="px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 font-medium text-sm transition-colors"
             >
-              Batal
+              {m.cancel}
             </button>
             <button
               type="submit"
               className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md hover:shadow-amber-500/20 transition-all"
             >
-              Terapkan & Main
+              {m.apply}
             </button>
           </div>
         </form>
@@ -267,4 +272,3 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
     </div>
   );
 };
-

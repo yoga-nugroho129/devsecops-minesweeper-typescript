@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { Flag, Bomb, X } from 'lucide-react';
 import { CellData } from '../types/minesweeper';
+import { Translations } from '../utils/i18n';
 
 interface CellProps {
   data: CellData;
@@ -9,6 +10,7 @@ interface CellProps {
   onFlag: (row: number, col: number) => void;
   onChord: (row: number, col: number) => void;
   disabled?: boolean;
+  t?: Translations['cellAria'];
 }
 
 const NUMBER_COLORS: Record<number, string> = {
@@ -29,6 +31,7 @@ export const Cell: React.FC<CellProps> = memo(({
   onFlag,
   onChord,
   disabled = false,
+  t,
 }) => {
   const { row, col, isMine, isRevealed, isFlagged, neighborMines, isExploded, isWrongFlag } = data;
 
@@ -107,6 +110,18 @@ export const Cell: React.FC<CellProps> = memo(({
     bgClasses = 'bg-slate-900/90 border border-slate-800/80 inset-shadow';
   }
 
+  const ariaLabel = t
+    ? `${t.row} ${row + 1}, ${t.col} ${col + 1}${
+        isRevealed
+          ? isMine
+            ? `, ${t.mine}`
+            : `, ${t.neighbors(neighborMines)}`
+          : isFlagged
+          ? `, ${t.flag}`
+          : `, ${t.unrevealed}`
+      }`
+    : `Row ${row + 1}, Col ${col + 1}`;
+
   return (
     <button
       type="button"
@@ -114,7 +129,7 @@ export const Cell: React.FC<CellProps> = memo(({
       onContextMenu={handleContextMenu}
       onDoubleClick={() => !disabled && isRevealed && onChord(row, col)}
       className={`${cellSizeClass} rounded flex items-center justify-center font-bold transition-all duration-75 select-none focus:outline-none focus:ring-1 focus:ring-amber-400/40 ${bgClasses}`}
-      aria-label={`Baris ${row + 1}, Kolom ${col + 1}${isRevealed ? (isMine ? ', Ranjau' : `, ${neighborMines} ranjau sekitar`) : isFlagged ? ', Bendera' : ', Belum dibuka'}`}
+      aria-label={ariaLabel}
     >
       {renderContent()}
     </button>
@@ -122,4 +137,3 @@ export const Cell: React.FC<CellProps> = memo(({
 });
 
 Cell.displayName = 'Cell';
-

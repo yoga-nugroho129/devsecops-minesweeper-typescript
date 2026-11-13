@@ -1,13 +1,17 @@
 import React from 'react';
 import { X, HelpCircle, MousePointer, Flag, Sparkles } from 'lucide-react';
+import { Translations } from '../utils/i18n';
 
 interface HowToPlayModalProps {
   isOpen: boolean;
   onClose: () => void;
+  t: Translations;
 }
 
-export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose }) => {
+export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose, t }) => {
   if (!isOpen) return null;
+
+  const g = t.modalGuide;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
@@ -15,7 +19,7 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <HelpCircle className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-lg font-bold text-white">Panduan Cara Bermain</h2>
+            <h2 className="text-lg font-bold text-white">{g.title}</h2>
           </div>
           <button
             type="button"
@@ -29,10 +33,10 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
         <div className="mt-4 space-y-4 text-sm text-slate-300">
           <div className="p-3 bg-slate-800/40 border border-slate-800 rounded-xl">
             <h3 className="font-semibold text-white mb-1 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-400" /> Tujuan Game
+              <Sparkles className="w-4 h-4 text-amber-400" /> {g.goalTitle}
             </h3>
             <p className="text-slate-400 text-xs leading-relaxed">
-              Buka seluruh kotak yang aman tanpa menginjak ranjau! Anda menang ketika semua kotak selain ranjau berhasil dibuka.
+              {g.goalDesc}
             </p>
           </div>
 
@@ -42,9 +46,9 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
                 <MousePointer className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-slate-200 text-xs">Klik Kiri (Sentuh Biasa)</h4>
+                <h4 className="font-semibold text-slate-200 text-xs">{g.leftTitle}</h4>
                 <p className="text-slate-400 text-xs">
-                  Membuka kotak. Angka yang muncul menunjukkan berapa banyak ranjau yang berada di 8 kotak sekelilingnya.
+                  {g.leftDesc}
                 </p>
               </div>
             </div>
@@ -54,9 +58,9 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
                 <Flag className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-slate-200 text-xs">Klik Kanan / Mode Bendera</h4>
+                <h4 className="font-semibold text-slate-200 text-xs">{g.rightTitle}</h4>
                 <p className="text-slate-400 text-xs">
-                  Menandai kotak dengan bendera untuk menandakan dugaan lokasi ranjau agar tidak sengaja tertekan.
+                  {g.rightDesc}
                 </p>
               </div>
             </div>
@@ -66,16 +70,16 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-slate-200 text-xs">Chord / Klik Cepat (Double-Click)</h4>
+                <h4 className="font-semibold text-slate-200 text-xs">{g.chordTitle}</h4>
                 <p className="text-slate-400 text-xs">
-                  Jika angka sudah memiliki jumlah bendera yang sesuai di sekitarnya, klik angka tersebut untuk langsung membuka semua kotak tersisa di sekitarnya.
+                  {g.chordDesc}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-300">
-            💡 <strong>Jaminan Langkah Pertama:</strong> Kotak pertama yang Anda klik dijamin 100% selalu aman dan membuka area awal secara mulus!
+            💡 {g.safeTip}
           </div>
         </div>
 
@@ -85,11 +89,10 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
             onClick={onClose}
             className="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition-colors"
           >
-            Mengerti, Ayo Main!
+            {g.understandButton}
           </button>
         </div>
       </div>
     </div>
   );
 };
-
