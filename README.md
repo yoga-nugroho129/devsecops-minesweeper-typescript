@@ -38,7 +38,17 @@ npm run dev
 
 Buka `http://localhost:5173` di browser Anda.
 
-### 2. Build untuk Produksi
+### 2. Jalankan Pengujian (*Unit Testing*)
+
+```bash
+# Menjalankan seluruh test suite sekali
+npm test
+
+# Menjalankan test dalam mode watch/interactive
+npm run test:watch
+```
+
+### 3. Build untuk Produksi
 
 ```bash
 npm run build
@@ -46,7 +56,7 @@ npm run build
 
 Hasil build yang siap dideploy akan berada di direktori `dist/`.
 
-### 3. Preview Hasil Build
+### 4. Preview Hasil Build
 
 ```bash
 npm run preview

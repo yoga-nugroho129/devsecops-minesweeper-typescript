@@ -165,10 +165,11 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
             <div className="p-4 bg-slate-950/60 border border-slate-800 rounded-xl space-y-4 animate-fade-in">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-400 block mb-1">
+                  <label htmlFor="custom-rows-input" className="text-xs text-slate-400 block mb-1">
                     {m.rowLabel}
                   </label>
                   <input
+                    id="custom-rows-input"
                     type="number"
                     min={4}
                     max={40}
@@ -185,10 +186,11 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-400 block mb-1">
+                  <label htmlFor="custom-cols-input" className="text-xs text-slate-400 block mb-1">
                     {m.colLabel}
                   </label>
                   <input
+                    id="custom-cols-input"
                     type="number"
                     min={4}
                     max={40}
@@ -207,10 +209,11 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
 
               <div>
                 <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span>{m.minesLabel(maxMines)}</span>
+                  <label htmlFor="custom-mines-input">{m.minesLabel(maxMines)}</label>
                   <span className="text-amber-400 font-mono font-semibold">{m.densityLabel(currentDensity)}</span>
                 </div>
                 <input
+                  id="custom-mines-input"
                   type="number"
                   min={1}
                   max={maxMines}
