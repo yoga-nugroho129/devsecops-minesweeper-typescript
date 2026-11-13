@@ -38,3 +38,4 @@ describe('LanguageToggle component', () => {
     expect(onLanguageChange).toHaveBeenCalledWith('en');
   });
 });
+

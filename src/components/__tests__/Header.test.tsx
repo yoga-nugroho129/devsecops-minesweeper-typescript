@@ -76,3 +76,4 @@ describe('Header component', () => {
     expect(onToggleFlagMode).toHaveBeenCalledTimes(1);
   });
 });
+

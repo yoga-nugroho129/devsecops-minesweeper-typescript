@@ -38,7 +38,7 @@ npm run dev
 
 Buka `http://localhost:5173` di browser Anda.
 
-### 2. Jalankan Pengujian (*Unit Testing*)
+### 2. Jalankan Pengujian (*Unit Testing*) & Coverage
 
 ```bash
 # Menjalankan seluruh test suite sekali
@@ -46,7 +46,12 @@ npm test
 
 # Menjalankan test dalam mode watch/interactive
 npm run test:watch
+
+# Menjalankan test coverage report
+npm run test:coverage
 ```
+
+Laporan HTML coverage juga otomatis dibuat di direktori `coverage/index.html`.
 
 ### 3. Build untuk Produksi
 

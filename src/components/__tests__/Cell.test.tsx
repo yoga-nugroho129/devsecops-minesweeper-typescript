@@ -109,3 +109,4 @@ describe('Cell component', () => {
     expect(onFlag).not.toHaveBeenCalled();
   });
 });
+

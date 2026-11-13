@@ -116,3 +116,4 @@ describe('App component (Integration)', () => {
     expect(screen.queryByText(/how to play guide/i)).not.toBeInTheDocument();
   });
 });
+

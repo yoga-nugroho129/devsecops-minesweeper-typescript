@@ -40,3 +40,4 @@ describe('i18n translation system', () => {
     expect(translations.id.cellAria.neighbors(3)).toBe('3 ranjau sekitar');
   });
 });
+

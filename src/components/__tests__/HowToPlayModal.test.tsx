@@ -28,3 +28,4 @@ describe('HowToPlayModal component', () => {
     expect(onClose).toHaveBeenCalled();
   });
 });
+
