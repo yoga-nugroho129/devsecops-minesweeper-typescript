@@ -267,3 +267,4 @@ export const CustomGameModal: React.FC<CustomGameModalProps> = ({
     </div>
   );
 };
+

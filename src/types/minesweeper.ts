@@ -24,3 +24,4 @@ export type BoardMatrix = CellData[][];
 export interface BestScores {
   [key: string]: number; // key e.g. "8x8-10" -> best time in seconds
 }
+

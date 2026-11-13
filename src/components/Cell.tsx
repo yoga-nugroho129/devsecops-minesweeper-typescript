@@ -122,3 +122,4 @@ export const Cell: React.FC<CellProps> = memo(({
 });
 
 Cell.displayName = 'Cell';
+

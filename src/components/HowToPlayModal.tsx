@@ -92,3 +92,4 @@ export const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose 
     </div>
   );
 };
+

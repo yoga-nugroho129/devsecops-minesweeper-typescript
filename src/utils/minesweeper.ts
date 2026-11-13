@@ -310,3 +310,4 @@ export function countFlags(board: BoardMatrix): number {
   }
   return count;
 }
+
