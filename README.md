@@ -1,67 +1,77 @@
-# 💣 Minesweeper Modern (React + TypeScript + Tailwind CSS)
+# 💣 Modern Minesweeper (React + TypeScript + Tailwind CSS)
 
-Game Minesweeper modern dengan logika klasik, desain neo-retro, dan kustomisasi ukuran grid (baris & kolom) secara fleksibel dengan ukuran standar **8x8** (10 ranjau).
+<p align="center">
+  <strong>English</strong> | <a href="./README.id.md">Bahasa Indonesia</a>
+</p>
 
-![Minesweeper](https://img.shields.io/badge/React-18-blue?logo=react)
+A modern Minesweeper web game featuring classic game mechanics, a neo-retro design, flexible custom grid dimensions (rows & columns), and an **8x8 (10 mines)** default configuration.
+
+![React](https://img.shields.io/badge/React-18.3-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?logo=tailwindcss)
 ![Vite](https://img.shields.io/badge/Vite-6.1-646cff?logo=vite)
+![Vitest](https://img.shields.io/badge/Vitest-3.0-green?logo=vitest)
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Features
 
-- 🌐 **Dukungan Multi-bahasa (Bilingual EN / ID)**: Dilengkapi tombol bendera (🇬🇧 English / 🇮🇩 Indonesia) untuk mengubah bahasa antarmuka secara instan, dengan **Bahasa Inggris (English) sebagai default**.
-- 📐 **Ukuran Grid Kustom**: Bebas mengatur jumlah baris (*row*) dan kolom (*column*) dari 4×4 hingga 40×40 serta mengatur jumlah ranjau sesuai keinginan.
-- 🎯 **Preset Standar**:
-  - **Pemula (Default)**: 8 × 8 (10 Ranjau)
-  - **Menengah**: 16 × 16 (40 Ranjau)
-  - **Ahli**: 16 × 30 (99 Ranjau)
-  - **Kustom**: Bebas atur ukuran baris, kolom, dan persentase kerapatan ranjau (12% santai, 16% standar, 22% sulit).
-- 🛡️ **Jaminan Klik Pertama Selalu Aman (*First-Click Safety*)**: Klik pertama dijamin tidak pernah mengenai ranjau dan otomatis membuka area aman di sekitarnya.
-- ⚡ **Chord Action (Double Click / Fast Reveal)**: Klik angka yang sudah dikelilingi bendera yang tepat untuk membuka sisa kotak sekitar secara instan.
-- 🚩 **Mode Bendera & Touch Friendly**: Dukungan klik kanan untuk meletakkan bendera di desktop, serta tombol toggle mode bendera khusus perangkat mobile/touchscreen.
-- ⏱️ **Digital LCD Display**: Timer detik dan penghitung sisa ranjau bergaya retro LED display.
-- 🔊 **Efek Suara Web Audio API**: Efek suara sintetis instan tanpa memerlukan file audio eksternal (bisa dimatikan/mute kapan saja).
-- 🎉 **Animasi Kemenangan**: Efek konfeti (*canvas-confetti*) saat berhasil menuntaskan seluruh kotak aman.
-- 🏆 **Penyimpanan Rekor Terbaik (*High Score*)**: Waktu tercepat disimpan di `localStorage` per konfigurasi grid.
+- 🌐 **Bilingual Support (EN / ID)**: Instant language switching via flag buttons (🇬🇧 English / 🇮🇩 Indonesia), with **English enabled by default**.
+- 📐 **Customizable Grid Dimensions**: Freely configure row count and column count from 4×4 up to 40×40 with custom mine counts.
+- 🎯 **Difficulty Presets**:
+  - **Beginner (Default)**: 8 × 8 • 10 Mines
+  - **Intermediate**: 16 × 16 • 40 Mines
+  - **Expert**: 16 × 30 • 99 Mines
+  - **Custom**: Configure rows, columns, and mine density presets (12% relaxed, 16% standard, 22% hard).
+- 🛡️ **Guaranteed First-Click Safety**: Your very first click is 100% safe and automatically opens a clean starting cluster.
+- ⚡ **Chord Action (Fast Reveal)**: Double-click or click revealed numbers with matching neighbor flags to instantly reveal remaining adjacent squares.
+- 🚩 **Flag Mode & Touch Support**: Right-click to flag on desktop, plus a dedicated flag-mode toggle button for mobile/touchscreen devices.
+- ⏱️ **Digital LCD Display**: Classic retro 3-digit LED displays for timer and remaining mine counters.
+- 🔊 **Synthesized Audio (Web Audio API)**: Zero external audio assets required; includes instant sound effects (click, flag, unflag, explosion, victory fanfare) and a mute/audio toggle.
+- 🎉 **Victory Celebration**: Delightful confetti animations powered by `canvas-confetti` upon clearing all safe cells.
+- 🏆 **High Score Persistence**: Automatically tracks and stores your best completion times in `localStorage` per board dimension.
+- 🧪 **Comprehensive Test Coverage**: Over 50 unit and integration tests using Vitest, React Testing Library, and v8 coverage reports.
 
 ---
 
-## 🚀 Cara Menjalankan
+## 🚀 Getting Started
 
-### 1. Jalankan Mode Development
+### 1. Run Development Server
 
 ```bash
 npm run dev
 ```
 
-Buka `http://localhost:5173` di browser Anda.
+Open `http://localhost:5173` in your browser.
 
-### 2. Jalankan Pengujian (*Unit Testing*) & Coverage
+### 2. Run Tests & Check Coverage
 
 ```bash
-# Menjalankan seluruh test suite sekali
+# Run all unit and integration tests
 npm test
 
-# Menjalankan test dalam mode watch/interactive
+# Run tests in watch mode
 npm run test:watch
 
-# Menjalankan test coverage report
+# Generate code coverage report (CLI table & HTML)
 npm run test:coverage
 ```
 
-Laporan HTML coverage juga otomatis dibuat di direktori `coverage/index.html`.
+To view the detailed interactive HTML coverage report in your browser:
 
-### 3. Build untuk Produksi
+```bash
+open coverage/index.html
+```
+
+### 3. Build for Production
 
 ```bash
 npm run build
 ```
 
-Hasil build yang siap dideploy akan berada di direktori `dist/`.
+Production-ready assets will be generated in the `dist/` directory.
 
-### 4. Preview Hasil Build
+### 4. Preview Production Build
 
 ```bash
 npm run preview
@@ -69,13 +79,30 @@ npm run preview
 
 ---
 
-## 🎮 Kontrol Permainan
+## 🎮 Game Controls
 
-| Aksi | Desktop | Mobile / Touch |
+| Action | Desktop | Mobile / Touchscreen |
 | --- | --- | --- |
-| **Buka Kotak** | Klik Kiri | Ketuk kotak |
-| **Beri Bendera** | Klik Kanan | Aktifkan ikon 🚩 lalu ketuk kotak |
-| **Chord (Buka Sekitar)** | Double Click / Klik pada angka yang sudah sesuai bendera | Ketuk angka |
-| **Mulai Ulang** | Klik tombol Emoji wajah 🙂 | Ketuk tombol Emoji wajah 🙂 |
+| **Reveal Square** | Left Click | Tap square |
+| **Place / Remove Flag** | Right Click | Tap 🚩 mode button, then tap square |
+| **Chord (Reveal Neighbors)** | Double Click / Click number with matching flags | Tap number |
+| **Restart Game** | Click emoji face 🙂 | Tap emoji face 🙂 |
 
-# devsecops-minesweeper-typescript
+---
+
+## 📁 Project Structure
+
+```text
+devsecops-minesweeper-typescript/
+├── src/
+│   ├── components/         # UI Components (Board, Cell, Header, Modals, LanguageToggle)
+│   ├── types/              # TypeScript definitions & interfaces
+│   ├── utils/              # Core game algorithms, audio synthesis, i18n
+│   ├── test/               # Vitest test setup and Web Audio mocks
+│   ├── __tests__/          # Integration test suites
+│   ├── App.tsx             # Main application orchestrator
+│   └── main.tsx            # Application entry point
+├── coverage/               # Generated test coverage reports
+├── vite.config.ts          # Vite & Vitest configuration
+└── package.json            # Project dependencies and npm scripts
+```
