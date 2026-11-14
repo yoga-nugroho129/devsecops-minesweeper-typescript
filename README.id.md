@@ -12,6 +12,10 @@ Game Minesweeper modern berbasis web dengan mekanisme klasik, desain neo-retro, 
 ![Vite](https://img.shields.io/badge/Vite-6.1-646cff?logo=vite)
 ![Vitest](https://img.shields.io/badge/Vitest-3.0-green?logo=vitest)
 
+<p align="center">
+  <img src="./assets/preview.jpg" alt="Preview Minesweeper Modern" width="650" style="border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);" />
+</p>
+
 ---
 
 ## ✨ Fitur Utama
@@ -94,6 +98,7 @@ npm run preview
 
 ```text
 devsecops-minesweeper-typescript/
+├── assets/                 # Screenshot dan aset visual preview
 ├── src/
 │   ├── components/         # Komponen UI (Board, Cell, Header, Modals, LanguageToggle)
 │   ├── types/              # Definisi TypeScript & interface
@@ -106,3 +111,4 @@ devsecops-minesweeper-typescript/
 ├── vite.config.ts          # Konfigurasi Vite & Vitest
 └── package.json            # Dependensi dan skrip npm
 ```
+
