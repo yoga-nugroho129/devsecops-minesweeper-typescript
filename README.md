@@ -13,7 +13,7 @@ A modern Minesweeper web game featuring classic game mechanics, a neo-retro desi
 ![Vitest](https://img.shields.io/badge/Vitest-3.0-green?logo=vitest)
 
 <p align="center">
-  <img src="./assets/preview.jpg" alt="Minesweeper Modern Preview" width="650" style="border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);" />
+  <img src="./assets/preview.png" alt="Minesweeper Modern Preview" width="650" style="border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);" />
 </p>
 
 ---
