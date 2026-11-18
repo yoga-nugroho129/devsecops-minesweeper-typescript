@@ -1,4 +1,4 @@
-# 💣 Modern Minesweeper — DevSecOps Portfolio
+# 💣 Modern Minesweeper — Proyek DevSecOps Cloud-Native
 
 <p align="center">
   <a href="./README.md">English</a> | <strong>Bahasa Indonesia</strong>
@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Peran-Application%20Component-purple?style=flat-square" alt="Peran" />
+  <img src="https://img.shields.io/badge/Peran-Application%20Service-purple?style=flat-square" alt="Peran" />
   <img src="https://img.shields.io/badge/Arsitektur-GitOps%20Dual--Repo-blue?style=flat-square" alt="Arsitektur" />
-  <img src="https://img.shields.io/badge/Target-Production--Grade%20DevSecOps%202026-success?style=flat-square" alt="Target" />
+  <img src="https://img.shields.io/badge/Standar-Production--Grade%20DevSecOps-success?style=flat-square" alt="Standar" />
   <br />
   <img src="https://img.shields.io/badge/React-18.3-blue?logo=react&style=flat-square" alt="React" />
   <img src="https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript&style=flat-square" alt="TypeScript" />
@@ -23,52 +23,50 @@
 
 ---
 
-## 📌 Konteks Proyek: Portofolio Personal DevSecOps
+## 📌 Ringkasan Proyek
 
-> [!IMPORTANT]
-> **Repositori ini BUKAN sekadar aplikasi game Minesweeper biasa.**  
-> Repositori ini merupakan **Komponen Aplikasi (*Application Repository*)** dari proyek portofolio **End-to-End Kubernetes DevSecOps (Target Arsitektur Standar Produksi 2026)**.
+Repositori ini menyimpan **Layanan Aplikasi (*Application Service*)** dari **Proyek DevSecOps Kubernetes Cloud-Native** berstandar enterprise.
 
-Game Minesweeper modern (dibangun dengan React 18, TypeScript, Tailwind CSS, dan Vitest) difungsikan sebagai **beban kerja frontend (*workload*) yang interaktif dan realistis**. Aplikasi ini sengaja dirancang untuk mendemonstrasikan dan memvalidasi siklus penuh DevSecOps berstandar enterprise: kontainerisasi, pengujian otomatis, analisis statis (SAST), pemindaian kerentanan keamanan, *continuous delivery* berbasis GitOps, serta *monitoring* pada kluster multi-node Kubernetes.
+Meskipun menyajikan aplikasi web yang interaktif dan kaya fitur menggunakan React 18, TypeScript, dan Tailwind CSS, repositori ini secara khusus dirancang untuk beroperasi sebagai beban kerja produksi (*production workload*) di dalam ekosistem DevSecOps yang terintegrasi. Proyek ini mengintegrasikan pengujian otomatis, kontainerisasi, *static application security testing* (SAST), pemindaian kerentanan CVE, *continuous delivery* berbasis GitOps, serta observabilitas sistem pada infrastruktur kluster multi-node.
 
 ---
 
-## 📂 Strategi Dua Repositori (GitOps Dual-Repo Model)
+## 📂 Arsitektur GitOps Dua Repositori
 
-Proyek ini menerapkan standar industri pemisahan tanggung jawab (*separation of concerns*) antara repositori kode sumber aplikasi dan repositori deklarasi infrastruktur/deployment:
+Sistem ini menerapkan standar pemisahan tanggung jawab (*separation of concerns*) antara kode sumber aplikasi dan konfigurasi infrastruktur melalui model dua repositori:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   MODEL GITOPS DUA REPOSITORI TERPISAH                 │
 ├──────────────────────────────────┬─────────────────────────────────────┤
-│ 📦 REPOSITORI 1 (REPOSI INI)     │ ⚙️ REPOSITORI 2 (REPO TERPISAH)     │
-│ Application & CI Pipeline        │ Infrastructure as Code & GitOps     │
+│ 📦 REPO APLIKASI (REPO INI)      │ ⚙️ REPO INFRASTRUKTUR & GITOPS      │
+│ Application Service & Pipeline CI│ Infrastructure as Code & GitOps     │
 ├──────────────────────────────────┼─────────────────────────────────────┤
-│ • Source Code React + TypeScript │ • Terraform (Provisioning VPS)      │
+│ • Source Code React + TypeScript │ • Terraform (IaC Provisioning VPS)  │
 │ • Unit Tests & Coverage (Vitest) │ • Ansible (Konfigurasi Server)      │
-│ • Multi-stage Dockerfile         │ • Setup Kluster K3s (Master/Worker) │
-│ • Konfigurasi Produksi Nginx     │ • Manifest Kubernetes (YAML)        │
-│ • Definisi Jenkins CI Pipeline   │ • Konfigurasi Argo CD App Sync      │
-│ • Pemicu Scan SonarQube & Trivy  │ • Dashboard Prometheus & Grafana    │
+│ • Kontainerisasi Produksi        │ • Setup Kluster K3s (Master/Worker) │
+│ • Konfigurasi Web Server Nginx   │ • Manifest Deklaratif Kubernetes    │
+│ • Pipeline CI Deklaratif         │ • Konfigurasi Sinkronisasi Argo CD  │
+│ • Pemindaian Keamanan Otomatis   │ • Telemetri Prometheus & Grafana    │
 └──────────────────────────────────┴─────────────────────────────────────┘
 ```
 
-- **Repositori 1: Application Repo (`devsecops-minesweeper-typescript` — *Repositori Ini*)**  
-  Fokus pada pengembangan fitur aplikasi, pengujian unit otomatis, kontainerisasi multi-stage, pemindaian keamanan kode & kontainer, serta *push* image terversi (dengan tag Git commit SHA) ke Docker Hub.
-- **Repositori 2: Infrastructure & GitOps Repo (`devops-infrastructure` — *Repositori Terpisah*)**  
-  Fokus pada penyediaan VPS via Terraform, manajemen konfigurasi otomatis dengan Ansible, pemeliharaan berkas manifest Kubernetes (`Deployment`, `Service`, `Ingress`), serta sinkronisasi deployment otomatis menggunakan Argo CD.
+- **Repositori Aplikasi (`devsecops-minesweeper-typescript` — *Repositori Ini*)**  
+  Bertanggung jawab atas pengembangan fitur aplikasi, pengujian unit komprehensif, pengemasan kontainer multi-stage, pemindaian keamanan, dan publikasi image terversi (dengan tag Git commit SHA) ke Docker Hub.
+- **Repositori Infrastruktur & GitOps (`devops-infrastructure` — *Repositori Terpisah*)**  
+  Bertanggung jawab atas provisioning server VPS via Terraform, otomatisasi konfigurasi server dengan Ansible, pemeliharaan berkas manifest Kubernetes (`Deployment`, `Service`, `Ingress`), serta manajemen *continuous delivery* otomatis melalui Argo CD.
 
 ---
 
-## 🏗️ Topologi Infrastruktur 3 VPS Standar Produksi
+## 🏗️ Topologi Infrastruktur
 
-Seluruh infrastruktur berjalan di atas 3 Virtual Private Server (masing-masing 2 vCPU, 4GB RAM, 60GB SSD dengan Ubuntu 24.04 LTS):
+Lingkungan produksi berjalan di atas 3 node cloud (masing-masing 2 vCPU, 4GB RAM, dan 60GB SSD dengan Ubuntu 24.04 LTS):
 
-| Node | Peran | Spesifikasi | Komponen Terpasang |
+| Node | Peran | Spesifikasi | Layanan & Komponen Terpasang |
 | :--- | :--- | :--- | :--- |
-| **VPS 1** | **Management & CI/CD** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | Jenkins Controller & Docker Agent, SonarQube + PostgreSQL, Trivy Scanner, Docker Engine |
+| **VPS 1** | **Management & CI/CD** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | Jenkins Controller & Docker Agent, SonarQube + PostgreSQL, Scanner Keamanan Trivy, Docker Engine |
 | **VPS 2** | **K8s Control Plane** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | K3s Server, Kubernetes API Server, Scheduler, Controller Manager, Argo CD |
-| **VPS 3** | **K8s Worker Node** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | K3s Agent, Pod Frontend Minesweeper (Nginx), Prometheus, Grafana, Node Exporter |
+| **VPS 3** | **K8s Worker Node** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | K3s Agent, Pod Aplikasi Frontend (Nginx), Prometheus, Grafana, Node Exporter |
 
 ---
 
@@ -106,80 +104,61 @@ flowchart LR
 ```
 
 ### Tahapan Siklus Pipeline:
-1. **Developer Push**: Pengembang melakukan push kode ke branch `main` repositori ini.
-2. **Pemicu CI**: GitHub Webhook secara otomatis memicu Declarative Jenkins Pipeline di VPS 1.
-3. **Pengujian Otomatis**: Vitest menjalankan 52 unit dan integration test serta memastikan *code coverage*.
-4. **Analisis Kualitas & SAST**: SonarQube memverifikasi standar kode dan batas toleransi *quality gate*.
-5. **Pembuatan Kontainer**: Docker mengompilasi image multi-stage yang aman, minimalis, dan siap produksi.
-6. **Pemindaian Keamanan**: Trivy memindai sistem berkas kontainer dari kerentanan CVE sebelum rilis.
-7. **Penyimpanan Image**: Image di-push ke Docker Hub menggunakan tag Git commit SHA yang unik (*immutable*).
-8. **Pemicu GitOps**: Jenkins memperbarui tag image pada repositori Infrastructure/GitOps yang terpisah.
-9. **Continuous Delivery**: Argo CD mendeteksi perubahan manifest dan menyinkronkan deployment ke kluster K3s secara otomatis.
-10. **Observabilitas**: Prometheus mengumpulkan metrik performa dan Grafana menyajikan visualisasi kesehatan aplikasi dan kluster.
+1. **Source Code Commit**: Pengembang melakukan push kode ke branch `main`.
+2. **Pemicu CI Otomatis**: GitHub Webhook memicu declarative pipeline Jenkins di VPS 1.
+3. **Pengujian Otomatis**: Vitest menjalankan 52 unit/integration test serta memvalidasi *code coverage*.
+4. **Analisis Kualitas & SAST**: SonarQube mengevaluasi kode dan memastikan kepatuhan *quality gate*.
+5. **Pembuatan Kontainer**: Docker mengemas build statis ke dalam kontainer produksi berbasis Nginx Alpine.
+6. **Pemindaian Keamanan**: Trivy memindai layer kontainer dan paket OS dari celah kerentanan (CVE).
+7. **Publikasi Artefak**: Image yang lolos scan di-push ke Docker Hub menggunakan tag Git commit SHA yang unik (*immutable*).
+8. **Pemicu GitOps**: Jenkins memperbarui tag image pada repositori Infrastruktur/GitOps yang terpisah.
+9. **Continuous Delivery**: Argo CD mendeteksi perubahan manifest dan merekonsiliasi deployment pada kluster K3s secara otomatis.
+10. **Telemetri Sistem**: Prometheus mengumpulkan metrik kinerja, dan Grafana menyajikan visualisasi kesehatan sistem.
 
 ---
 
-## 🗺️ Roadmap DevSecOps 8 Tingkat
+## 🗺️ Tahapan Arsitektur DevSecOps
 
-| Level | Bidang Fokus | Teknologi | Status | Detail Implementasi |
-| :---: | :--- | :--- | :---: | :--- |
-| **0** | **Infrastructure as Code** | Terraform + Ansible | 🔄 Berjalan | Otomatisasi provisioning VPS dan konfigurasi node server/worker K3s |
-| **1** | **Kontainerisasi** | Docker + Nginx Alpine | ✅ Selesai | Multi-stage build (Node.js 24 builder → Nginx runtime) + SPA routing |
-| **2** | **Container Registry** | Docker Hub | 🔄 Rencana | Otomatisasi publikasi image dengan penandaan Git SHA yang aman |
-| **3** | **CI Pipeline** | Jenkins + Webhook | 🔄 Rencana | Declarative pipeline otomatis untuk build, test, dan packaging |
-| **4** | **DevSecOps Security Gate**| SonarQube + Trivy | 🔄 Rencana | Pemeriksaan SAST dan pemindaian kerentanan image sebelum rilis |
-| **5** | **Orkestrasi Kubernetes**| K3s + Ingress Nginx | 🔄 Rencana | Deployment, ClusterIP, Ingress, health check, dan resource limits |
-| **6** | **GitOps Delivery** | Argo CD | 🔄 Rencana | Sinkronisasi deklaratif GitOps dengan auto-prune dan self-healing |
-| **7** | **Monitoring & Alerting** | Prometheus + Grafana | 🔄 Rencana | Telemetri kluster, Node Exporter, dan dasbor lalu lintas frontend |
-
----
-
-## 🐳 Arsitektur Kontainerisasi Aplikasi
-
-Repositori ini telah mengimplementasikan [Dockerfile](./Dockerfile) multi-stage dan konfigurasi produksi [nginx/default.conf](./nginx/default.conf):
-
-```dockerfile
-# Tahap 1: Build & Kompilasi
-FROM node:24-alpine3.22 AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Tahap 2: Runtime Produksi Ringan
-FROM nginx:stable-alpine
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist /usr/share/nginx/html
-RUN nginx -t
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### Keunggulan Desain Ini:
-- **Tanpa Node.js di Produksi**: Node.js dan `node_modules` sepenuhnya dibuang setelah build selesai, menyusutkan ukuran image akhir menjadi hanya **~25 MB** dan mengeliminasi kerentanan keamanan runtime Node.js.
-- **Mendukung SPA Routing**: Konfigurasi `try_files $uri $uri/ /index.html;` mencegah error 404 saat pengguna me-refresh halaman client-side.
-- **Optimalisasi Caching**: Header `Cache-Control: public, immutable` (1 tahun) untuk aset statis berkode hash (`/assets/`) dan `no-cache` untuk `index.html` agar pembaruan rilis langsung tampil ke pengguna.
+| Tahap | Bidang Fokus | Teknologi | Cakupan & Detail Implementasi |
+| :---: | :--- | :--- | :--- |
+| **0** | **Infrastructure as Code** | Terraform + Ansible | Otomatisasi provisioning VPS, keamanan SSH, dan bootstrap node kluster K3s |
+| **1** | **Kontainerisasi** | Docker + Nginx Alpine | Pengemasan kontainer multi-stage, non-root execution, SPA routing, dan caching |
+| **2** | **Container Registry** | Docker Hub | Penyimpanan image terpusat dengan penandaan tag Git commit SHA (*immutable*) |
+| **3** | **CI Pipeline** | Jenkins + Webhook | Pipeline deklaratif otomatis untuk kompilasi, pengujian, dan pembuatan kontainer |
+| **4** | **DevSecOps Security** | SonarQube + Trivy | Analisis keamanan statis (SAST) dan pemindaian kerentanan kontainer sebelum rilis |
+| **5** | **Orkestrasi Kubernetes** | K3s + Ingress Nginx | Manifest deklaratif Deployment, Service, Ingress, health checks, dan resource limits |
+| **6** | **GitOps Delivery** | Argo CD | Rekonsiliasi GitOps otomatis dengan deteksi perbedaan konfigurasi (*drift*) dan self-healing |
+| **7** | **Observabilitas & Monitoring** | Prometheus + Grafana | Telemetri kluster, Node Exporter, metrik beban kerja, dan dasbor operasional |
 
 ---
 
-## 🎮 Aplikasi Beban Kerja: Modern Minesweeper
+## 🐳 Kontainerisasi & Web Server
 
-Aplikasi yang digunakan sebagai beban kerja ini dibangun dengan standar kode berkualitas tinggi:
+Aplikasi dikontainerisasi melalui proses multi-stage yang memisahkan lingkungan kompilasi dari lingkungan runtime produksi:
 
-### Fitur Aplikasi
-- 🌐 **Dua Bahasa (EN / ID)**: Alih bahasa cepat via tombol bendera (🇬🇧 English / 🇮🇩 Indonesia), default English.
-- 📐 **Ukuran Grid Bebas**: Bebas atur baris dan kolom (4×4 hingga 40×40) beserta jumlah ranjau.
+- **Ukuran Minimal**: Node.js dan seluruh dependensinya dibuang setelah proses build selesai, menghasilkan image Alpine Nginx akhir berukuran hanya **~25 MB**.
+- **Mendukung SPA Routing**: Konfigurasi produksi [nginx/default.conf](./nginx/default.conf) menangani client-side routing secara presisi melalui `try_files $uri $uri/ /index.html;`.
+- **Optimalisasi Caching**: Aset statis berkode hash (`/assets/`) menggunakan *caching* jangka panjang (`Cache-Control: public, immutable`), sedangkan `index.html` tidak di-cache guna memastikan pembaruan rilis segera diterapkan.
+
+---
+
+## 🎮 Spesifikasi Aplikasi: Modern Minesweeper
+
+Aplikasi beban kerja ini dibangun dengan standar rekayasa web modern:
+
+### Fitur Utama
+- 🌐 **Dua Bahasa (EN / ID)**: Alih bahasa instan via tombol bendera (🇬🇧 English / 🇮🇩 Indonesia), default English.
+- 📐 **Ukuran Grid Bebas**: Konfigurasi baris dan kolom yang fleksibel (4×4 hingga 40×40) dengan pengaturan jumlah ranjau.
 - 🎯 **Preset Kesulitan**:
   - **Pemula (Default)**: 8 × 8 • 10 Ranjau
   - **Menengah**: 16 × 16 • 40 Ranjau
   - **Ahli**: 16 × 30 • 99 Ranjau
   - **Kustom**: Dimensi bebas dengan tombol kerapatan (12% santai, 16% standar, 22% sulit).
-- 🛡️ **Klik Pertama Aman**: Klik pembuka dijamin 100% aman dan langsung membuka area awal.
-- ⚡ **Chord Action**: Double-click angka untuk membuka kotak sekitar yang belum berbendera secara instan.
+- 🛡️ **Klik Pertama Aman**: Klik pertama dijamin 100% aman dan otomatis membuka area awal.
+- ⚡ **Chord Action**: Double-click pada angka untuk membuka kotak sekitar yang belum berbendera secara instan.
 - ⏱️ **Tampilan LED Digital**: Penghitung waktu dan sisa ranjau bergaya 3-digit LED klasik.
-- 🔊 **Audio Web Audio API**: Efek suara sintetis ringan (klik, bendera, bom, menang) + tombol mute.
-- 🧪 **Pengujian Menyeluruh**: 52 unit dan integration test dengan laporan cakupan Vitest.
+- 🔊 **Audio Web Audio API**: Sintesis efek suara prosedural ringan (klik, bendera, ledakan, menang) + tombol mute.
+- 🧪 **Pengujian Unit**: 52 unit dan integration test dengan verifikasi cakupan kode.
 
 ---
 
@@ -189,14 +168,14 @@ Aplikasi yang digunakan sebagai beban kerja ini dibangun dengan standar kode ber
 ```bash
 npm run dev
 ```
-Buka `http://localhost:5173` di browser.
+Akses di `http://localhost:5173`.
 
 ### 2. Menjalankan Unit Test & Coverage
 ```bash
-# Menjalankan seluruh test
+# Menjalankan seluruh pengujian unit & integrasi
 npm test
 
-# Menjalankan test dalam mode watch
+# Menjalankan pengujian dalam mode interaktif (watch mode)
 npm run test:watch
 
 # Menjalankan laporan coverage (CLI table & HTML)
@@ -209,7 +188,7 @@ Buka laporan interaktif HTML: `open coverage/index.html`
 # Build image Docker produksi
 docker build -t minesweeper:local .
 
-# Jalankan kontainer
+# Jalankan kontainer aplikasi
 docker run -d -p 8080:80 --name minesweeper-app minesweeper:local
 ```
 Akses aplikasi dalam kontainer di `http://localhost:8080`.
@@ -220,17 +199,17 @@ Akses aplikasi dalam kontainer di `http://localhost:8080`.
 
 ```text
 devsecops-minesweeper-typescript/
-├── assets/                 # Aset visual preview dan arsitektur
+├── assets/                 # Aset visual preview dan diagram arsitektur
 ├── nginx/
 │   └── default.conf        # Konfigurasi Nginx SPA routing & caching produksi
 ├── src/
 │   ├── components/         # Komponen UI (Board, Cell, Header, Modals, LanguageToggle)
 │   ├── types/              # Definisi interface & tipe TypeScript
-│   ├── utils/              # Logika matriks game, Web Audio, kamus i18n
+│   ├── utils/              # Logika matriks game, sintesis audio, kamus i18n
 │   ├── test/               # Setup pengujian Vitest dan mock Web Audio
 │   ├── __tests__/          # Rangkaian integration test aplikasi
-│   ├── App.tsx             # Komponen utama permainan
-│   └── main.tsx            # Titik masuk aplikasi
+│   ├── App.tsx             # Komponen root aplikasi
+│   └── main.tsx            # Titik masuk DOM (entry point)
 ├── coverage/               # Laporan cakupan kode pengujian
 ├── Dockerfile              # Berkas build multi-stage Docker produksi
 ├── .dockerignore           # Berkas yang dikecualikan dari build Docker
@@ -242,17 +221,15 @@ devsecops-minesweeper-typescript/
 
 ---
 
-## 🎯 Definition of Done (Bukti Kompetensi Portofolio)
+## 🎯 Standar Teknis & Kapabilitas Sistem
 
-Pada akhir implementasi proyek, repositori aplikasi ini bersama repositori infrastruktur pasangannya akan mendemonstrasikan:
-
-| Kemampuan | Bukti Implementasi |
+| Dimensi | Standar Implementasi |
 | :--- | :--- |
-| **Pengembangan Aplikasi** | SPA modern React + TypeScript dengan 52 unit test yang lolos 100% |
-| **Kontainerisasi** | Image Docker multi-stage berukuran sangat ringkas (~25MB) dengan Nginx |
+| **Lapisan Aplikasi** | SPA modern React + TypeScript dengan 52 unit test yang lolos 100% |
+| **Kontainerisasi** | Image kontainer Alpine Nginx multi-stage minimalis (~25MB) tanpa build tools |
 | **Continuous Integration** | Otomatisasi pipeline Jenkins yang dipicu melalui GitHub Webhook |
 | **Pemindaian Keamanan** | Analisis SAST SonarQube & pemindaian kerentanan kontainer Trivy |
 | **Manajemen Artefak** | Image terversi di Docker Hub dengan tag Git commit SHA yang konsisten |
-| **GitOps Delivery** | Argo CD menyinkronkan manifest secara otomatis tanpa `kubectl` manual |
+| **GitOps Delivery** | Rekonsiliasi otomatis Argo CD dengan deteksi *drift* dan *self-healing* |
 | **Orkestrasi Kubernetes** | High Availability deployment pada kluster K3s multi-node dengan Ingress |
 | **Observabilitas** | Pengumpulan metrik real-time Prometheus dan visualisasi dasbor Grafana |
