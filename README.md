@@ -1,4 +1,4 @@
-# 💣 Modern Minesweeper — Cloud-Native DevSecOps Project
+# 💣 Modern Minesweeper — Kubernetes DevSecOps Project
 
 <p align="center">
   <strong>English</strong> | <a href="./README.id.md">Bahasa Indonesia</a>
@@ -9,12 +9,14 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Role-Application%20Service-purple?style=flat-square" alt="Role" />
-  <img src="https://img.shields.io/badge/Architecture-GitOps%20Dual--Repo-blue?style=flat-square" alt="Architecture" />
-  <img src="https://img.shields.io/badge/Standard-Production--Grade%20DevSecOps-success?style=flat-square" alt="Standard" />
+  <img src="https://img.shields.io/badge/Project-Application%20Repo-blue?style=flat-square" alt="Project" />
+  <img src="https://img.shields.io/badge/Architecture-GitOps%20Dual--Repo-purple?style=flat-square" alt="Architecture" />
+  <img src="https://img.shields.io/badge/Orchestrator-K3s%20Kubernetes-326ce5?logo=kubernetes&style=flat-square" alt="Kubernetes" />
+  <img src="https://img.shields.io/badge/GitOps-Argo%20CD-ef6b48?logo=argo&style=flat-square" alt="Argo CD" />
+  <img src="https://img.shields.io/badge/CI%2FCD-Jenkins-d33833?logo=jenkins&style=flat-square" alt="Jenkins" />
   <br />
-  <img src="https://img.shields.io/badge/React-18.3-blue?logo=react&style=flat-square" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript&style=flat-square" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/React-18.3-61dafb?logo=react&style=flat-square" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5.7-3178c6?logo=typescript&style=flat-square" alt="TypeScript" />
   <img src="https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?logo=tailwindcss&style=flat-square" alt="Tailwind" />
   <img src="https://img.shields.io/badge/Docker-Multi--Stage-2496ed?logo=docker&style=flat-square" alt="Docker" />
   <img src="https://img.shields.io/badge/Nginx-Alpine-009639?logo=nginx&style=flat-square" alt="Nginx" />
@@ -25,52 +27,51 @@
 
 ## 📌 Project Overview
 
-This repository hosts the **Application Service** of an enterprise-grade, cloud-native **Kubernetes DevSecOps Project**.
+This repository contains the frontend application and CI pipeline configuration for a multi-node **Kubernetes DevSecOps Project**.
 
-While serving an interactive, feature-rich web application built with modern React 18, TypeScript, and Tailwind CSS, this codebase is engineered specifically to operate as a production workload within a complete DevSecOps ecosystem. It integrates automated testing, containerization, static application security testing (SAST), vulnerability scanning, GitOps continuous delivery, and cluster observability across dedicated multi-node cloud infrastructure.
+The application itself is a modern, responsive Minesweeper web game built with React 18, TypeScript, and Tailwind CSS. Rather than being just a standalone game, it serves as the practical frontend workload to implement and test a complete deployment workflow: automated testing, static code analysis (SAST), container security scanning, GitOps-based deployment, and cluster monitoring.
 
 ---
 
-## 📂 Dual-Repository GitOps Architecture
+## 📂 Two-Repository GitOps Setup
 
-This system enforces strict **separation of concerns** between application source code and deployment/infrastructure configurations through a decoupled two-repository model:
+The project uses a decoupled GitOps architecture that separates the application codebase from the infrastructure and deployment configurations:
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────────┐
-│                      TWO-REPOSITORY GITOPS MODEL                       │
+│                        TWO-REPOSITORY GITOPS MODEL                     │
 ├──────────────────────────────────┬─────────────────────────────────────┤
-│ 📦 APPLICATION REPO (THIS REPO)  │ ⚙️ INFRASTRUCTURE & GITOPS REPO     │
-│ Application Service & CI Pipeline│ Infrastructure as Code & GitOps     │
+│ 📦 1. APPLICATION REPO (THIS)    │ ⚙️ 2. INFRASTRUCTURE REPO (SEPARATE)│
 ├──────────────────────────────────┼─────────────────────────────────────┤
-│ • React + TypeScript Source Code │ • Terraform (Infrastructure IaC)    │
-│ • Unit Tests & Coverage (Vitest) │ • Ansible (System Configuration)    │
-│ • Production Container Packaging │ • K3s Multi-node Cluster Setup      │
-│ • Nginx Web Server Configuration │ • Kubernetes Declarative Manifests  │
-│ • Declarative CI Pipeline        │ • Argo CD GitOps Synchronization    │
-│ • Automated Security Scanning    │ • Prometheus & Grafana Observability│
+│ • React + TypeScript source code │ • Terraform configs (VPS setup)     │
+│ • Vitest unit tests & coverage   │ • Ansible playbooks (Server setup)  │
+│ • Multi-stage Dockerfile         │ • K3s cluster installation (Server) │
+│ • Nginx configuration & SPA rules│ • Kubernetes YAML manifests (App)   │
+│ • Jenkinsfile (CI pipeline)      │ • Argo CD application configs       │
+│ • SonarQube & Trivy scan steps   │ • Prometheus & Grafana configs      │
 └──────────────────────────────────┴─────────────────────────────────────┘
 ```
 
-- **Application Repository (`devsecops-minesweeper-typescript` — *This Repository*)**  
-  Responsible for core application development, comprehensive unit testing, multi-stage container packaging, security scanning, and pushing versioned images (tagged with Git commit SHA) to Docker Hub.
-- **Infrastructure & GitOps Repository (`devops-infrastructure` — *Separate Repository*)**  
-  Responsible for provisioning VPS instances via Terraform, automating server setup with Ansible, maintaining declarative Kubernetes manifests (`Deployment`, `Service`, `Ingress`), and managing continuous delivery through Argo CD.
+- **Application Repo (`devsecops-minesweeper-typescript` — *This repository*)**:  
+  Handles application development, unit tests, Docker packaging, security scans, and pushing versioned images (tagged with Git commit SHA) to Docker Hub.
+- **Infrastructure & GitOps Repo (`devops-infrastructure` — *Separate repository*)**:  
+  Handles server provisioning via Terraform, configuration management via Ansible, declarative Kubernetes manifests (`Deployment`, `Service`, `Ingress`), and GitOps synchronization via Argo CD.
 
 ---
 
-## 🏗️ Infrastructure Topology
+## 🏗️ 3-Node VPS Topology
 
-The production environment runs across three dedicated cloud nodes (each provisioned with 2 vCPU, 4GB RAM, and 60GB SSD running Ubuntu 24.04 LTS):
+The project runs on three VPS nodes (each with 2 vCPU, 4GB RAM, 60GB SSD on Ubuntu 24.04 LTS):
 
-| Node | Role | Specifications | Installed Services & Components |
+| Node | Role | Specs | Services & Tools |
 | :--- | :--- | :--- | :--- |
-| **VPS 1** | **Management & CI/CD** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | Jenkins Controller & Docker Agent, SonarQube + PostgreSQL, Trivy Security Scanner, Docker Engine |
-| **VPS 2** | **K8s Control Plane** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | K3s Server, Kubernetes API Server, Scheduler, Controller Manager, Argo CD |
-| **VPS 3** | **K8s Worker Node** | 2 vCPU · 4 GB RAM · Ubuntu 24.04 | K3s Agent, Frontend Application Pods (Nginx), Prometheus, Grafana, Node Exporter |
+| **VPS 1** | **CI/CD Management** | 2 vCPU · 4 GB RAM | Jenkins, SonarQube + PostgreSQL, Trivy, Docker Engine |
+| **VPS 2** | **K8s Control Plane** | 2 vCPU · 4 GB RAM | K3s Server, Kubernetes API, Scheduler, Controller Manager, Argo CD |
+| **VPS 3** | **K8s Worker Node** | 2 vCPU · 4 GB RAM | K3s Agent, Minesweeper Pods (Nginx), Prometheus, Grafana, Node Exporter |
 
 ---
 
-## 🔄 End-to-End DevSecOps Pipeline Flow
+## 🔄 CI/CD & GitOps Workflow
 
 ```mermaid
 flowchart LR
@@ -80,11 +81,11 @@ flowchart LR
 
   subgraph CIServer["🛠️ VPS 1: CI/CD Server (Jenkins)"]
     Git -->|"GitHub Webhook"| Jenkins["Jenkins Pipeline"]
-    Jenkins --> Test["1. Unit Tests & Coverage<br/>(Vitest)"]
-    Test --> SAST["2. Code Quality & SAST<br/>(SonarQube)"]
-    SAST --> Build["3. Multi-Stage Docker Build<br/>(Node 24 -> Nginx)"]
-    Build --> Scan["4. Security & Vulnerability Scan<br/>(Trivy)"]
-    Scan --> Push["5. Push Versioned Image<br/>(Docker Hub with Git SHA)"]
+    Jenkins --> Test["1. Unit Tests (Vitest)"]
+    Test --> SAST["2. Code Quality & SAST (SonarQube)"]
+    SAST --> Build["3. Multi-Stage Docker Build"]
+    Build --> Scan["4. Vulnerability Scan (Trivy)"]
+    Scan --> Push["5. Push Image with Git SHA Tag"]
   end
 
   subgraph Registry["🐳 Container Registry"]
@@ -95,70 +96,65 @@ flowchart LR
     Push -->|"Auto-update image tag"| Manifests["Kubernetes Manifests<br/>(deployment.yaml)"]
   end
 
-  subgraph K8sCluster["☸️ VPS 2 & 3: Kubernetes Cluster (K3s)"]
-    Manifests -->|"Detect & Sync"| Argo["Argo CD Controller"]
-    Argo -->|"Reconcile & Deploy"| App["Frontend Pods<br/>(Nginx Alpine)"]
+  subgraph K8sCluster["☸️ VPS 2 & 3: Kubernetes (K3s)"]
+    Manifests -->|"Sync Changes"| Argo["Argo CD"]
+    Argo -->|"Deploy / Reconcile"| App["Frontend Pods<br/>(Nginx Alpine)"]
     Reg -.->|"Pull Image"| App
-    Prom["Prometheus & Grafana"] -.->|"Metrics & Alerts"| App
+    Prom["Prometheus & Grafana"] -.->|"Scrape Metrics"| App
   end
 ```
 
-### Pipeline Lifecycle Stages:
-1. **Source Code Commit**: Developer pushes changes to the `main` branch.
-2. **Automated CI Trigger**: GitHub Webhook triggers the declarative Jenkins pipeline on VPS 1.
-3. **Automated Testing**: Vitest runs 52 unit/integration tests with code coverage verification.
-4. **Code Quality & SAST**: SonarQube evaluates code quality and verifies quality gates.
-5. **Container Build**: Docker packages the static build into a production-grade Alpine Nginx container.
-6. **Security Scanning**: Trivy inspects container layers and OS packages for vulnerabilities (CVEs).
-7. **Artifact Publishing**: The verified image is published to Docker Hub with an immutable Git commit SHA tag.
-8. **GitOps Trigger**: Jenkins commits the updated image tag into the separate Infrastructure/GitOps repository.
-9. **Continuous Delivery**: Argo CD detects manifest changes and reconciles deployment on the K3s cluster.
-10. **Cluster Telemetry**: Prometheus collects performance metrics, and Grafana visualizes system health.
+### Workflow Steps:
+1. **Push Code**: Code is pushed to the `main` branch.
+2. **CI Trigger**: GitHub Webhook triggers the Jenkins pipeline on VPS 1.
+3. **Run Tests**: Vitest runs all 52 unit/integration tests and generates coverage reports.
+4. **Code Quality & SAST**: SonarQube checks code health against quality gates.
+5. **Container Build**: Docker builds a lightweight production image using a multi-stage process.
+6. **Security Scan**: Trivy scans container layers and packages for CVEs.
+7. **Push to Registry**: Image is pushed to Docker Hub with an immutable Git commit SHA tag.
+8. **GitOps Update**: Jenkins updates the image tag in the separate Infrastructure/GitOps repository.
+9. **Argo CD Sync**: Argo CD detects the updated manifest and syncs the changes to the K3s cluster.
+10. **Monitoring**: Prometheus collects runtime metrics and Grafana visualizes node and pod health.
 
 ---
 
-## 🗺️ DevSecOps Architecture Stages
+## 🗺️ Project Implementation Stages
 
-| Stage | Focus Area | Technology Stack | Scope & Implementation Details |
+| Level | Area | Tools | Description |
 | :---: | :--- | :--- | :--- |
-| **0** | **Infrastructure as Code** | Terraform + Ansible | Automated VPS provisioning, SSH security, and K3s cluster node bootstrap |
-| **1** | **Containerization** | Docker + Nginx Alpine | Multi-stage container packaging, non-root execution, SPA routing, and caching |
-| **2** | **Container Registry** | Docker Hub | Centralized image storage using immutable Git commit SHA tagging |
-| **3** | **CI Pipeline** | Jenkins + Webhooks | Declarative pipeline executing automated build, test, and container packaging |
-| **4** | **DevSecOps Security** | SonarQube + Trivy | Static application security testing (SAST) and container vulnerability scanning |
-| **5** | **Kubernetes Orchestration** | K3s + Ingress Nginx | Declarative Deployments, Services, Ingress, health checks, and resource limits |
-| **6** | **GitOps Delivery** | Argo CD | Declarative GitOps reconciliation with automated drift detection and self-healing |
-| **7** | **Observability & Monitoring** | Prometheus + Grafana | Cluster telemetry, Node Exporter, workload metrics, and operational dashboards |
+| **0** | **Infrastructure as Code** | Terraform + Ansible | Automated VPS setup, SSH access, and K3s node configuration |
+| **1** | **Containerization** | Docker + Nginx Alpine | Multi-stage build (Node 24 builder → Nginx runtime) with SPA routing |
+| **2** | **Container Registry** | Docker Hub | Central image registry using Git commit SHA tags |
+| **3** | **CI Pipeline** | Jenkins + Webhook | Automated pipeline for test, build, and packaging |
+| **4** | **DevSecOps** | SonarQube + Trivy | Static application security testing (SAST) and container vulnerability scanning |
+| **5** | **Kubernetes** | K3s + Ingress Nginx | Declarative Deployments, Services, Ingress rules, and resource limits |
+| **6** | **GitOps** | Argo CD | Automated sync from the GitOps repo with self-healing |
+| **7** | **Monitoring** | Prometheus + Grafana | Node Exporter, cluster telemetry, and application dashboards |
 
 ---
 
-## 🐳 Containerization & Web Server
+## 🐳 Container Setup & Web Server
 
-The application is containerized using a multi-stage process that separates the build environment from the production runtime:
+The application uses a multi-stage Docker build with Nginx Alpine:
 
-- **Minimal Footprint**: Node.js and dependencies are discarded after build, producing an Alpine Nginx image of **~25 MB**.
-- **SPA Routing**: Production [nginx/default.conf](./nginx/default.conf) handles client-side routing via `try_files $uri $uri/ /index.html;`.
-- **HTTP Caching**: Static hashed assets (`/assets/`) receive long-term immutable caching (`Cache-Control: public, immutable`), while `index.html` remains uncached to ensure instant deployment updates.
+- **Small Footprint**: Node.js and dependencies are only used during the build stage. The final production image is ~25 MB.
+- **SPA Routing**: The [nginx/default.conf](./nginx/default.conf) file handles client-side routing with `try_files $uri $uri/ /index.html;`.
+- **HTTP Caching**: Static assets in `/assets/` have long-term immutable cache headers, while `index.html` is not cached so new deployments load immediately.
 
 ---
 
-## 🎮 Application Specifications: Modern Minesweeper
+## 🎮 The Frontend Application: Modern Minesweeper
 
-The workload is a responsive, feature-complete web game developed with modern web standards:
+The application used as the project's frontend workload includes:
 
-### Key Features
-- 🌐 **Bilingual (EN / ID)**: Instant language switching via flag buttons (🇬🇧 English / 🇮🇩 Indonesia), with English as default.
-- 📐 **Customizable Grid**: Flexible configuration of rows and columns (4×4 to 40×40) with adjustable mine density.
-- 🎯 **Difficulty Presets**:
-  - **Beginner (Default)**: 8 × 8 • 10 Mines
-  - **Intermediate**: 16 × 16 • 40 Mines
-  - **Expert**: 16 × 30 • 99 Mines
-  - **Custom**: Custom dimensions with density shortcuts (12% relaxed, 16% standard, 22% hard).
-- 🛡️ **Guaranteed First-Click Safety**: Initial click is guaranteed safe and automatically clears an open starting area.
-- ⚡ **Chord Action**: Double-click or click revealed numbers with matching flags to open remaining neighbors.
-- ⏱️ **Digital LED Display**: Classic 3-digit LED displays for timer and remaining mine counter.
-- 🔊 **Synthesized Audio**: Lightweight Web Audio API synthesis (click, flag, detonation, victory) with mute toggle.
-- 🧪 **Unit Testing**: 52 unit and integration tests with coverage reporting.
+- 🌐 **Bilingual (EN / ID)**: Language switcher with flag buttons (🇬🇧 English / 🇮🇩 Indonesia), default is English.
+- 📐 **Custom Grid Size**: Adjustable rows and columns (from 4×4 to 40×40) with custom mine counts.
+- 🎯 **Presets**: Beginner (8×8, 10 mines), Intermediate (16×16, 40 mines), Expert (16×30, 99 mines), and Custom.
+- 🛡️ **First-Click Safety**: The first click is guaranteed safe and opens a starting area.
+- ⚡ **Chord Action**: Double-click or click on revealed numbers with matching flags to open neighboring cells.
+- ⏱️ **Digital LCD Display**: 3-digit retro displays for remaining mines and elapsed time.
+- 🔊 **Sound Effects**: Synthesized audio via Web Audio API (no external sound files required) with a mute toggle.
+- 🧪 **Unit Tests**: 52 unit/integration tests with Vitest and coverage reporting.
 
 ---
 
@@ -168,30 +164,30 @@ The workload is a responsive, feature-complete web game developed with modern we
 ```bash
 npm run dev
 ```
-Access at `http://localhost:5173`.
+Open `http://localhost:5173` in your browser.
 
-### 2. Run Unit Tests & Check Coverage
+### 2. Run Tests & Check Coverage
 ```bash
-# Run all unit and integration tests
+# Run all unit tests
 npm test
 
-# Run tests in interactive watch mode
+# Run tests in watch mode
 npm run test:watch
 
-# Generate code coverage report (CLI table & HTML)
+# Generate coverage report
 npm run test:coverage
 ```
-View HTML report: `open coverage/index.html`
+Open HTML coverage report: `open coverage/index.html`
 
 ### 3. Build & Run Container Locally
 ```bash
-# Build production Docker image
+# Build Docker image
 docker build -t minesweeper:local .
 
-# Run containerized application
+# Run container
 docker run -d -p 8080:80 --name minesweeper-app minesweeper:local
 ```
-Access the containerized app at `http://localhost:8080`.
+Open `http://localhost:8080`.
 
 ---
 
@@ -199,37 +195,37 @@ Access the containerized app at `http://localhost:8080`.
 
 ```text
 devsecops-minesweeper-typescript/
-├── assets/                 # Visual preview and architecture assets
+├── assets/                 # App preview images and diagrams
 ├── nginx/
-│   └── default.conf        # Production Nginx SPA routing & caching config
+│   └── default.conf        # Production Nginx SPA routing and cache rules
 ├── src/
-│   ├── components/         # UI Components (Board, Cell, Header, Modals, LanguageToggle)
-│   ├── types/              # TypeScript definitions & interfaces
-│   ├── utils/              # Game algorithms, audio synthesis, i18n
-│   ├── test/               # Vitest test setup and Web Audio mocks
+│   ├── components/         # UI components (Board, Cell, Header, Modals, LanguageToggle)
+│   ├── types/              # TypeScript interfaces
+│   ├── utils/              # Game logic, Web Audio, i18n
+│   ├── test/               # Vitest setup and Web Audio mocks
 │   ├── __tests__/          # Integration test suites
-│   ├── App.tsx             # Application root
-│   └── main.tsx            # DOM Entry point
+│   ├── App.tsx             # Root component
+│   └── main.tsx            # Entry point
 ├── coverage/               # Generated test coverage reports
-├── Dockerfile              # Production multi-stage Docker build
-├── .dockerignore           # Docker build exclusions
-├── vite.config.ts          # Vite & Vitest configuration
-├── package.json            # Project dependencies and scripts
-├── README.md               # English Documentation (This file)
-└── README.id.md            # Bahasa Indonesia Documentation
+├── Dockerfile              # Multi-stage production Dockerfile
+├── .dockerignore           # Docker build ignore rules
+├── vite.config.ts          # Vite & Vitest config
+├── package.json            # Dependencies and npm scripts
+├── README.md               # English documentation
+└── README.id.md            # Bahasa Indonesia documentation
 ```
 
 ---
 
-## 🎯 Production Engineering Standards
+## 🎯 Technical Summary
 
-| Dimension | Implementation Standard |
+| Component | Technical Implementation |
 | :--- | :--- |
-| **Application Layer** | Responsive React + TypeScript SPA with 52 passing unit tests |
-| **Containerization** | Minimal, multi-stage Alpine Nginx container (~25MB) with zero build tools |
-| **Continuous Integration** | Automated Jenkins pipeline triggered via GitHub Webhooks |
-| **Security Scanning** | SonarQube SAST Quality Gate & Trivy Container vulnerability enforcement |
-| **Artifact Management** | Versioned images pushed to Docker Hub with immutable Git SHA tags |
-| **GitOps Delivery** | Argo CD automated reconciliation with drift detection and self-healing |
-| **Kubernetes Orchestration** | High-availability multi-node K3s cluster deployment with Ingress routing |
-| **Observability** | Prometheus real-time metrics collection and Grafana operational dashboards |
+| **Frontend App** | React 18 + TypeScript SPA with 52 passing Vitest unit tests |
+| **Container** | Multi-stage Alpine Nginx image (~25MB) with zero build dependencies |
+| **CI Pipeline** | Jenkins declarative pipeline triggered via GitHub Webhook |
+| **Security Scanning** | SonarQube SAST quality gate and Trivy container vulnerability scan |
+| **Image Registry** | Docker Hub repository tagged with immutable Git commit SHAs |
+| **GitOps** | Argo CD automated sync, drift detection, and self-healing |
+| **Kubernetes** | Multi-node K3s cluster with Ingress routing and resource limits |
+| **Monitoring** | Prometheus metrics collection and Grafana operational dashboards |
