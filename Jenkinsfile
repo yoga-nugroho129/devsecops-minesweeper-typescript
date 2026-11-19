@@ -3,7 +3,7 @@ pipeline {
 
     options {
         timestamps()
-        disbaleConcurrentBuilds()
+        disableConcurrentBuilds()
         skipDefaultCheckout(true)
     }
 
