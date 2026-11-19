@@ -77,7 +77,12 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                echo 'Docker build will be configured next'
+                sh '''
+                    docker build \
+                        --platform-linux/amd64 \
+                        --tag devsecops-minesweeper:${BUILD_NUMBER} \
+                        .
+                '''
             }
         }
 
