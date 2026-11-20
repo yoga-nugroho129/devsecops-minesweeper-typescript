@@ -88,7 +88,12 @@ pipeline {
 
         stage('Trivy Scan') {
             steps {
-                echo 'Trivy scan will be configured next'
+                sh '''
+                    trivy image \
+                        --severity HIGH, CRITICAL \
+                        --exit-code 1 \
+                        devsecops-minesweeper:${BUILD_NUMBER}
+                '''
             }
         }
 
