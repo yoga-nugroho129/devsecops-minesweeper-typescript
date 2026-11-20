@@ -99,7 +99,41 @@ pipeline {
 
         stage('Push Docker Hub') {
             steps {
-                echo 'Docker Hub push will be configured next'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKERHUB_USERNAME',
+                        passwordVariable: 'DOCKERHUB_TOKEN'
+                    )
+                ]) {
+                    sh '''
+                        set -eu
+
+                        IMAGE_NAME="docker.io/${DOCKERHUB_USERNAME}/devsecops-minesweeper"
+
+                        # Login to Docker Hub
+                        printf '%s' "$DOCKERHUB_TOKEN" | \
+                            docker login \
+                                --username "$DOCKERHUB_USERNAME" \
+                                --password-stdin
+
+                        # Remove stored login credentials after this stage
+                        trap 'docker logout >/dev/null 2>&1 || true' EXIT
+
+                        # Tag image with build number and latest
+                        docker tag \
+                            devsecops-minesweeper:${BUILD_NUMBER} \
+                            "${IMAGE_NAME}:${BUILD_NUMBER}"
+
+                        docker tag \
+                            devsecops-minesweeper:${BUILD_NUMBER} \
+                            "${IMAGE_NAME}:latest"
+
+                        # Push both tags
+                        docker push "${IMAGE_NAME}:${BUILD_NUMBER}"
+                        docker push "${IMAGE_NAME}:latest"
+                    '''
+                }
             }
         }
     }
