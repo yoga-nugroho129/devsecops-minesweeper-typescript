@@ -90,7 +90,7 @@ pipeline {
             steps {
                 sh '''
                     trivy image \
-                        --severity HIGH, CRITICAL \
+                        --severity HIGH,CRITICAL \
                         --exit-code 1 \
                         devsecops-minesweeper:${BUILD_NUMBER}
                 '''
