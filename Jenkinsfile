@@ -79,7 +79,7 @@ pipeline {
             steps {
                 sh '''
                     docker build \
-                        --platform-linux/amd64 \
+                        --platform linux/amd64 \
                         --tag devsecops-minesweeper:${BUILD_NUMBER} \
                         .
                 '''
